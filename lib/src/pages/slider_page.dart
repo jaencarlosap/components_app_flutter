@@ -9,6 +9,7 @@ class SliderPage extends StatefulWidget {
 
 class _SliderPageState extends State<SliderPage> {
   double _sliderValue = 100.0;
+  bool _checkbox = false;
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +22,8 @@ class _SliderPageState extends State<SliderPage> {
         child: Column(
           children: [
             _crearSlider(),
+            _crearChecbox(),
+            _crearSwitch(),
             Expanded(child: _crearImagen()),
           ],
         ),
@@ -35,12 +38,36 @@ class _SliderPageState extends State<SliderPage> {
       value: _sliderValue,
       min: 10.0,
       max: 400.0,
-      onChanged: (value) {
-        setState(() {
-          _sliderValue = value;
-        });
-      },
+      onChanged: _checkbox
+          ? null
+          : (value) {
+              setState(() {
+                _sliderValue = value;
+              });
+            },
     );
+  }
+
+  Widget _crearChecbox() {
+    return CheckboxListTile(
+        title: Text('Bloquear slider'),
+        value: _checkbox,
+        onChanged: (value) {
+          setState(() {
+            _checkbox = value;
+          });
+        });
+  }
+
+  Widget _crearSwitch() {
+    return SwitchListTile(
+        title: Text('Bloquear slider'),
+        value: _checkbox,
+        onChanged: (value) {
+          setState(() {
+            _checkbox = value;
+          });
+        });
   }
 
   Widget _crearImagen() {
