@@ -10,6 +10,9 @@ class _InputPageState extends State<InputPage> {
   String _email = '';
   String _password = '';
   String _date = '';
+  String _opcionSelecionada = 'Volar';
+
+  List<String> _poderes = ['Volar', 'Rayos X', 'Super fuerza'];
 
   TextEditingController _inputDate = new TextEditingController();
 
@@ -29,6 +32,8 @@ class _InputPageState extends State<InputPage> {
           _crearPassword(),
           Divider(),
           _crearDate(context),
+          Divider(),
+          _crearDropdown(),
           Divider(),
           _imprimirPersona(),
         ],
@@ -55,13 +60,6 @@ class _InputPageState extends State<InputPage> {
           _nombre = value;
         });
       },
-    );
-  }
-
-  Widget _imprimirPersona() {
-    return ListTile(
-      title: Text('Nombre: $_nombre'),
-      subtitle: Text('Email: $_email'),
     );
   }
 
@@ -131,6 +129,7 @@ class _InputPageState extends State<InputPage> {
       initialDate: new DateTime.now(),
       firstDate: new DateTime(2018),
       lastDate: new DateTime(2025),
+      locale: Locale('es', 'ES'),
     );
 
     if (picked != null) {
@@ -139,5 +138,49 @@ class _InputPageState extends State<InputPage> {
         _inputDate.text = _date;
       });
     }
+  }
+
+  Widget _crearDropdown() {
+    return Row(
+      children: [
+        Icon(Icons.select_all),
+        SizedBox(width: 30.0),
+        Expanded(
+          child: DropdownButton(
+            isExpanded: true,
+            items: getOpcionesDropdown(),
+            onChanged: (value) {
+              setState(() {
+                _opcionSelecionada = value;
+              });
+            },
+            value: _opcionSelecionada,
+          ),
+        ),
+      ],
+    );
+  }
+
+  List<DropdownMenuItem<String>> getOpcionesDropdown() {
+    List<DropdownMenuItem<String>> lista = new List();
+
+    _poderes.forEach((value) {
+      lista.add(
+        DropdownMenuItem(
+          value: value,
+          child: Text(value),
+        ),
+      );
+    });
+
+    return lista;
+  }
+
+  Widget _imprimirPersona() {
+    return ListTile(
+      title: Text('Nombre: $_nombre'),
+      subtitle: Text('Email: $_email'),
+      trailing: Text('Poder: $_opcionSelecionada'),
+    );
   }
 }
